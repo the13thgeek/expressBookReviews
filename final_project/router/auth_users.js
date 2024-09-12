@@ -58,6 +58,15 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
   return res.send("A review for book #" + isbn + " has been posted by " + username + ".");
 });
 
+// Delete a book review
+regd_users.delete("/auth/review/:isbn", (req, res) => {
+    let isbn = req.params.isbn;
+    let username = req.session.authorization["username"];
+    delete books[isbn]["reviews"][username];
+
+    return res.status(200).send("Review from " + username + " has been deleted.");
+});
+
 module.exports.authenticated = regd_users;
 module.exports.isValid = isValid;
 module.exports.users = users;

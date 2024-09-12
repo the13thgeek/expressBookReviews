@@ -39,27 +39,60 @@ public_users.post("/register", (req,res) => {
 
 // Get the book list available in the shop
 public_users.get('/',function (req, res) {
-    res.send(JSON.stringify(books,null,4)); 
+  const getBooks = new Promise((resolve, reject) => {
+    try {
+      resolve(books);
+    } catch(e) {
+      reject(e.message);
+    }
+  });
+
+  getBooks.then((books) => { res.send(JSON.stringify(books,null,4)); }).catch((e) => { res.status(500).send(e) });
 });
 
 // Get book details based on ISBN
 public_users.get('/isbn/:isbn',function (req, res) {
   const isbn = req.params.isbn;
-  res.send(books[isbn]);
+
+  const getBookFromIsbn = new Promise((resolve, reject) => {
+    try {
+      resolve(books[isbn]);
+    } catch(e) {
+      reject(e.message);
+    }
+  });
+
+  getBookFromIsbn.then((book) => { res.send(book); }).catch((e) => { res.status(500).send(e) });
  });
   
 // Get book details based on author
 public_users.get('/author/:author',function (req, res) {
   const author = req.params.author;
-  const author_books = Object.values(books).filter((book) => book.author.toLowerCase() === author.toLowerCase());
-  res.send(author_books);
+
+  const getBookFromAuthor = new Promise((resolve, reject) => {
+    try {
+      resolve(Object.values(books).filter((book) => book.author.toLowerCase() === author.toLowerCase()));
+    } catch(e) {
+      reject(e.message);
+    }
+  });
+
+  getBookFromAuthor.then((booklist) => { res.send(booklist); }).catch((e) => { res.status(500).send(e) });
 });
 
 // Get all books based on title
 public_users.get('/title/:title',function (req, res) {
   const title = req.params.title;
-  const title_books = Object.values(books).filter((book) => book.title.toLowerCase() === title.toLowerCase());
-  res.send(title_books);
+
+  const getBookByTitle = new Promise((resolve, reject) => {
+    try {
+      resolve(Object.values(books).filter((book) => book.title.toLowerCase() === title.toLowerCase()));
+    } catch(e) {
+      reject(e.message);
+    }
+  });
+
+    getBookByTitle.then((booklist) => { res.send(booklist); }).catch((e) => { res.status(500).send(e) });
 });
 
 //  Get book review
