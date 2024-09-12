@@ -53,7 +53,7 @@ regd_users.post("/login", (req,res) => {
 regd_users.put("/auth/review/:isbn", (req, res) => {
   let isbn = req.params.isbn;
   let username = req.session.authorization["username"];
-  books[isbn]["reviews"][username] = req.query.review;
+  books[isbn]["reviews"][username] = req.body.review;
 
   return res.send("A review for book #" + isbn + " has been posted by " + username + ".");
 });
